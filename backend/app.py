@@ -15,7 +15,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-# ================= MODELS (Section 2 Structure Maintained) =================
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
@@ -44,7 +44,7 @@ class Task(db.Model):
     list_id = db.Column(db.Integer, db.ForeignKey('list_model.id'), nullable=False)
     title = db.Column(db.String(200), nullable=False)
 
-# ================= AUTH ROUTES =================
+
 @app.route('/auth/register', methods=['POST'])
 def register():
     data = request.json
@@ -67,7 +67,7 @@ def login():
         return jsonify({"token": token, "username": user.username, "user_id": user.id})
     return jsonify({"error": "Invalid credentials"}), 401
 
-# ================= BOARD & INVITE ROUTES =================
+
 @app.route('/boards/<int:board_id>', methods=['GET'])
 def get_board(board_id):
     board = Board.query.get(board_id)
@@ -90,7 +90,7 @@ def invite_member(board_id):
     db.session.commit()
     return jsonify({"message": f"{user.username} added as {role}"})
 
-# ================= SECTION 3: LIST & TASK ACTIONS (Edit/Delete) =================
+
 
 @app.route('/lists', methods=['POST'])
 def create_list():
@@ -142,7 +142,7 @@ def delete_task(task_id):
         return jsonify({"success": True})
     return jsonify({"error": "Task not found"}), 404
 
-# ================= REAL-TIME UPDATES =================
+
 @socketio.on('move_task')
 def handle_move(data):
     emit('board_updated', broadcast=True)

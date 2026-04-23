@@ -5,7 +5,7 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 
 const socket = io('http://127.0.0.1:5000');
 
-// Task Colors ka Tadka 🎨
+
 const colors = ['#e3f2fd', '#f1f8e9', '#fffde7', '#fce4ec', '#f3e5f5'];
 
 function App() {
@@ -75,7 +75,7 @@ function App() {
   const onDragEnd = async (result) => {
     const { destination, draggableId } = result;
     
-    // Agar user ne task ko list ke bahar drop kiya, toh wahin rehne do
+    
     if (!destination) return;
 
     try {
@@ -84,10 +84,10 @@ function App() {
         list_id: destination.droppableId 
       });
 
-      // 2. Socket ko batao ki move ho gaya hai (Board ID ke sath)
+      
       socket.emit('move_task', { boardId: currentBoard.id });
 
-      // 3. Turant data refresh karo taaki task wahin rahe
+      
       fetchBoardData(currentBoard.id);
       
     } catch (err) {
